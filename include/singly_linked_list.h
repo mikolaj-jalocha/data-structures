@@ -90,11 +90,8 @@ template<typename T>
 void SinglyLinkedList<T>::push(const int index, T e) {
     if (size - 1 < index)
         throw std::out_of_range("Index can't be larger than size");
-
     if (index == 0)
         return push_first(e);
-    if (index == size - 1)
-        return push_back(e);
 
     Node<T> *current = head;
     Node<T> *previous = head;

@@ -113,12 +113,10 @@ void DoublyLinkedList<T>::push(const int index, T e) {
 
     if (index == 0)
         return push_first(e);
-    if (index == size - 1)
-        return push_back(e);
 
     MyDoubleNode<T> *current = head;
 
-    for (int i = 0; i < index; i++) {
+    for (int i = 0; i < index-1; i++) {
            current = current->next;
     }
 
