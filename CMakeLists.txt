@@ -7,4 +7,6 @@ add_executable(DataStructuresLists main.cpp
         include/singly_linked_list.h
         include/doubly_linked_list.h
         include/array_list.h
+        include/random_numbers_generator.h
+        include/random_numbers_generator.cpp
 )
