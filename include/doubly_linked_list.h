@@ -106,29 +106,33 @@ void DoublyLinkedList<T>::push_back(T e) {
     tail = temp;
     size++;
 }
+
 template<typename T>
-void DoublyLinkedList<T>::push(const int index, T e) {
-    if (size - 1 < index)
-        throw std::out_of_range("Index can't be larger than size");
+void DoublyLinkedList<T>::push(int index, T e) {
+    if (index < 0 || index > size)
+        throw std::out_of_range("Index out of range");
 
-    if (index == 0)
-        return push_first(e);
+    if (index == 0) return push_first(e);
+    if (index == size) return push_back(e);
 
-    MyDoubleNode<T> *current = head;
-
-    for (int i = 0; i < index-1; i++) {
-           current = current->next;
+    MyDoubleNode<T>* current = head;
+    for (int i = 0; i < index - 1; i++) {
+        current = current->next;
     }
 
     auto* temp = new MyDoubleNode<T>;
-
     temp->element = e;
     temp->next = current->next;
     temp->previous = current;
     current->next = temp;
-    size++;
 
+    if (temp->next != nullptr) {
+        temp->next->previous = temp;
+    }
+
+    size++;
 }
+
 
 template<typename T>
 T DoublyLinkedList<T>::remove_first() {
@@ -144,37 +148,47 @@ T DoublyLinkedList<T>::remove_first() {
 template<typename T>
 T DoublyLinkedList<T>::remove_last() {
     if (isEmpty()) return T();
+
     T data = tail->element;
     MyDoubleNode<T>* old_tail = tail;
     tail = tail->previous;
-    tail->next = nullptr;
+
+    if (tail) {
+        tail->next = nullptr;
+    } else {
+        head = nullptr;
+    }
+
     delete old_tail;
     size--;
     return data;
 }
+
+
 template<typename T>
 T DoublyLinkedList<T>::remove(const int index) {
-    if (size - 1 < index)
-        throw std::out_of_range("Index can't be larger than size");
-    if (index == 0)
-        return remove_first();
-    if (index == size - 1)
-        return remove_last();
+    if (index < 0 || index >= size)
+        throw std::out_of_range("Index out of range");
+
+    if (index == 0) return remove_first();
+    if (index == size - 1) return remove_last();
 
     MyDoubleNode<T>* temp = head;
-
     for (int i = 0; i < index; i++) {
         temp = temp->next;
     }
 
     T data = temp->element;
-
     temp->previous->next = temp->next;
-    size--;
+    if (temp->next != nullptr) {
+        temp->next->previous = temp->previous;
+    }
 
     delete temp;
+    size--;
     return data;
 }
+
 
 template<typename T>
 void DoublyLinkedList<T>::display() {
