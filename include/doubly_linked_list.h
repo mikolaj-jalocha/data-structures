@@ -40,6 +40,9 @@ public:
 
     void push_back(T e);
 
+    int search(T e);
+    T get(int index);
+
     T remove(int index);
 
     T remove_first();
@@ -107,6 +110,7 @@ void DoublyLinkedList<T>::push_back(T e) {
     size++;
 }
 
+//TODO: potential improvement: when index is larger that size/2 start iterating from end.
 template<typename T>
 void DoublyLinkedList<T>::push(int index, T e) {
     if (index < 0 || index > size)
@@ -165,6 +169,8 @@ T DoublyLinkedList<T>::remove_last() {
 }
 
 
+
+//TODO: potential improvement: when index is larger that size/2 start iterating from end.
 template<typename T>
 T DoublyLinkedList<T>::remove(const int index) {
     if (index < 0 || index >= size)
@@ -200,5 +206,41 @@ void DoublyLinkedList<T>::display() {
     std::cout << "NULL\n";
 }
 
+template<typename T>
+int DoublyLinkedList<T>::search(T e) {
+    MyDoubleNode<T> *current = head;
+    int indexCounter = 0;
+    while (current) {
+        if (current->element == e) {
+            return indexCounter;
+        }
+        indexCounter++;
+        current = current->next;
+    }
+    return -1;
+}
+
+template<typename T>
+T DoublyLinkedList<T>::get(const int index) {
+    if (index < 0 || index >= size)
+        throw std::out_of_range("Index out of range");
+
+    if (index == 0) return head->element;
+    if (index == size - 1) return tail->element;
+
+    if (index > size/2) {
+        MyDoubleNode<T>* temp = tail;
+        for (int i = size-1; i >= 0; i--) {
+            temp = temp->previous;
+        }
+        return temp->element;
+    } else {
+        MyDoubleNode<T>* temp = head;
+         for (int i = 0; i < index; i++) {
+             temp = temp->next;
+         }
+         return temp->element;
+     }
+}
 
 #endif //DOUBLY_LINKED_LIST_H

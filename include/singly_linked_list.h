@@ -39,6 +39,9 @@ public:
     void push(int index, T e);
     void push_back(T e);
 
+    int search(T e);
+    T get(int index);
+
     T remove(int index);
     T remove_first();
     T remove_last();
@@ -199,6 +202,37 @@ void SinglyLinkedList<T>::display() {
         current = current->next;
     }
     std::cout << "NULL\n";
+}
+
+template<typename T>
+int SinglyLinkedList<T>::search(T e) {
+    Node<T> *current = head;
+    int indexCounter = 0;
+    while (current) {
+        if (current->element == e) {
+            return indexCounter;
+        }
+        indexCounter++;
+        current = current->next;
+    }
+    return -1;
+}
+
+template<typename T>
+T SinglyLinkedList<T>::get(const int index) {
+    if (size - 1 < index)
+        throw std::out_of_range("Index can't be larger than size");
+
+    if (index == 0)
+        return head->element;
+    if (index == size - 1)
+        return tail->element;
+    Node<T> *current = head;
+
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    return current->element;
 }
 
 #endif // SINGLY_LINKED_LIST_H
