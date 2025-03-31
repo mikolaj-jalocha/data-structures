@@ -15,6 +15,7 @@ private:
     int capacity;
 public:
     ArrayList();
+    ArrayList(const ArrayList<T> &other);
     ~ArrayList();
 
     void display();
@@ -33,6 +34,17 @@ public:
 };
 template<typename T>
 ArrayList<T>::ArrayList() : element(new T[2]), size(0), capacity(2) {}
+
+template<typename T>
+ArrayList<T>::ArrayList(const ArrayList<T> &other) :
+    element(new T[other.capacity]),
+    size(other.size),
+    capacity(other.capacity)
+{
+    for (int i = 0; i < size; ++i) {
+        element[i] = other.element[i];
+    }
+}
 
 template<typename T>
 ArrayList<T>::~ArrayList() {

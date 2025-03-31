@@ -25,6 +25,7 @@ private:
 
 public:
     SinglyLinkedList();
+    SinglyLinkedList(const SinglyLinkedList<T> &other);
     ~SinglyLinkedList();
 
     //nondiscard here because of presence of return value.
@@ -51,6 +52,15 @@ public:
 
 template<typename T>
 SinglyLinkedList<T>::SinglyLinkedList() : head(nullptr), tail(nullptr), size(0) {}
+
+template<typename T>
+SinglyLinkedList<T>::SinglyLinkedList(const SinglyLinkedList<T> &other) : head(nullptr), tail(nullptr), size(0) {
+    Node<T>* current = other.head;
+    while (current) {
+        push_back(current->element);
+        current = current->next;
+    }
+}
 
 template<typename T>
 SinglyLinkedList<T>::~SinglyLinkedList() {
