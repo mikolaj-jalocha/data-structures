@@ -23,7 +23,7 @@ private:
 
 public:
     DoublyLinkedList();
-
+    DoublyLinkedList(const DoublyLinkedList<T> &other);
     ~DoublyLinkedList();
 
     [[nodiscard]] int getSize() const;
@@ -54,6 +54,15 @@ public:
 
 template<typename T>
 DoublyLinkedList<T>::DoublyLinkedList() : head(nullptr), tail(nullptr), size(0) {
+}
+
+template<typename T>
+DoublyLinkedList<T>::DoublyLinkedList(const DoublyLinkedList<T> &other) : head(nullptr), tail(nullptr), size(0) {
+    MyDoubleNode<T>* current = other.head;
+    while (current != nullptr) {
+        push_back(current->element);
+        current = current->next;
+    }
 }
 
 template<typename T>
@@ -230,7 +239,7 @@ T DoublyLinkedList<T>::get(const int index) {
 
     if (index > size/2) {
         MyDoubleNode<T>* temp = tail;
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size-1; i > index; i--) {
             temp = temp->previous;
         }
         return temp->element;
