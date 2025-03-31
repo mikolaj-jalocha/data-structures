@@ -37,7 +37,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
         case 3: {
             auto start = std::chrono::high_resolution_clock::now();
             for (int i=0; i<1000; i++) {
-                copies[i].push(n, index);
+                copies[i].push(index, n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
@@ -69,7 +69,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
         case 6: {
                 auto start = std::chrono::high_resolution_clock::now();
                 for (int i=0; i<1000; i++) {
-                    copies[i].remove(n);
+                    copies[i].remove(index);
                 }
                 auto stop= std::chrono::high_resolution_clock::now();
                 auto duration = duration_cast<std::chrono::microseconds>(stop - start);
@@ -87,10 +87,20 @@ int main() {
     DoublyLinkedList<int> doublyLinkedList;
     ArrayList<int> arrayList;
 
+    for (int i=0; i<10; i++) {
+        singlyLinkedList.push_back(i);
+        doublyLinkedList.push_back(i);
+        arrayList.push_back(i);
+    }
+
+    singlyLinkedList.display();
+    arrayList.display();
+    doublyLinkedList.display();
+
     constexpr int testValue=20;
     constexpr int testIndex=1;
 
-    std::cout<<"Tests for pushing first element\n";
+    std::cout<<"\nTests for pushing first element\n";
     std::cout<<"Singly linked list:\n";
     performance_test(singlyLinkedList, 1, testValue);
     std::cout<<"Doubly linked list:\n";
@@ -132,10 +142,10 @@ int main() {
 
     std::cout << "\nTests for removing a specific element\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 6, testValue);
+    performance_test(singlyLinkedList, 6, testIndex);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 6, testValue);
+    performance_test(doublyLinkedList, 6, testIndex);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 6, testValue);
+    performance_test(arrayList, 6, testIndex);
 
 }

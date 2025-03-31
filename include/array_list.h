@@ -25,7 +25,7 @@ public:
     void doubleCapacity();
     void push_back(T newElement);
     void push_first(T newElement);
-    void push(T newElement, int index);
+    void push(int index, T newElement);
     void remove_last();
     void remove_first();
     void remove(int index);
@@ -104,7 +104,7 @@ void ArrayList<T>::push_first(T newElement) {
 }
 
 template<typename T>
-void ArrayList<T>::push(T newElement, int index) {
+void ArrayList<T>::push(int index, T newElement) {
     if (index<0 || index>size) {
         throw std::out_of_range("Index out of range");
     }
