@@ -2,29 +2,11 @@
 #include "include/doubly_linked_list.h"
 #include "include/array_list.h"
 #include "include/random_numbers_generator.h"
+#include "include/utils/write_to_file.h"
 #include <filesystem>
 #include <fstream>
 #include <vector>
 #include <chrono>
-
-
-
-//TODO: improve overall structure and maybe move performance tests to separate file
-
-void toFile(const std::string& fileName, const std::string& sectionName, long long duration, bool newSet = false) {
-    std::ofstream file(fileName, std::ios::app);
-    if (!file.is_open()) {
-        std::cerr << "Error opening file: " << fileName << std::endl;
-        return;
-    }
-    if (!newSet) {
-        file << sectionName << ":\n" << duration << "\n";
-    }else {
-        file << "\nTime in microseconds for "<<sectionName<<" data set.\n\n";
-    }
-    file.close();
-}
-
 
 template<typename T>
 void performanceTests(T& structure, const std::string& structureName, int operation, int n = 0, int index = 0) {
@@ -117,7 +99,7 @@ int main() {
     ArrayList<int> arrayList;
 
     //generate random numbers to file
-    for (int i=0; i<10; i++) {
+    for (int i=0; i<12; i++) {
         int testIndex=1;
         int testValue=20;
         int step= 5000;
