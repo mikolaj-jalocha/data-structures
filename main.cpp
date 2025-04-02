@@ -7,27 +7,35 @@
 #include <vector>
 #include <chrono>
 
-//TODO: enhance writing to file logic
+
+
 //TODO: improve overall structure and maybe move performance tests to separate file
 
-void toFile(const std::string& fileName, long long duration) {
+void toFile(const std::string& fileName, const std::string& sectionName, long long duration, bool newSet = false) {
     std::ofstream file(fileName, std::ios::app);
     if (!file.is_open()) {
         std::cerr << "Error opening file: " << fileName << std::endl;
+        return;
     }
-    file << duration << "\n";
+    if (!newSet) {
+        file << sectionName << ":\n" << duration << "\n";
+    }else {
+        file << "\nTime in microseconds for "<<sectionName<<" data set.\n\n";
+    }
     file.close();
 }
 
-//attempt to perform time tests
+
 template<typename T>
-void performance_test(T& structure, const std::string& fileName, int operation, int n = 0, int index = 0) {
+void performanceTests(T& structure, const std::string& structureName, int operation, int n = 0, int index = 0) {
     //create copies of structure to perform reliable test for each one operation
     std::vector<T> copies(1000, structure);
+    std::string fileName= " ";
 
     //switch case for all methods
     switch (operation) {
         case 1: {
+            fileName = "push_first.txt";
             auto start = std::chrono::high_resolution_clock::now();
             //loop due to the very short duration of the operation
             for (int i=0; i<1000; i++) {
@@ -35,68 +43,64 @@ void performance_test(T& structure, const std::string& fileName, int operation, 
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-            
-            // leaving this line now just to make sure writing to files works properly 
-            std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-            
-            toFile(fileName, duration.count());
+            toFile(fileName, structureName, duration.count());
             break;
         }
         case 2: {
+            fileName = "push_last.txt";
             auto start = std::chrono::high_resolution_clock::now();
             for (int i=0; i<1000; i++) {
                 copies[i].push_back(n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-           std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-            toFile(fileName, duration.count());
+            toFile(fileName,structureName, duration.count());
             break;
         }
         case 3: {
+            fileName = "push.txt";
             auto start = std::chrono::high_resolution_clock::now();
             for (int i=0; i<1000; i++) {
                 copies[i].push(index, n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-            toFile(fileName, duration.count());
+            toFile(fileName,structureName, duration.count());
             break;
         }
         case 4: {
+            fileName = "remove_first.txt";
             auto start = std::chrono::high_resolution_clock::now();
             for (int i=0; i<1000; i++) {
                 copies[i].remove_first();
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-            toFile(fileName, duration.count());
+            toFile(fileName,structureName, duration.count());
             break;
         }
         case 5:
             {
+                fileName = "remove_last.txt";
                 auto start = std::chrono::high_resolution_clock::now();
                 for (int i=0; i<1000; i++) {
                     copies[i].remove_last();
                 }
                 auto stop= std::chrono::high_resolution_clock::now();
                 auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-                std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-                toFile(fileName, duration.count());
+                toFile(fileName, structureName,duration.count());
                 break;
             }
 
         case 6: {
+                fileName = "remove.txt";
                 auto start = std::chrono::high_resolution_clock::now();
                 for (int i=0; i<1000; i++) {
                     copies[i].remove(index);
                 }
                 auto stop= std::chrono::high_resolution_clock::now();
                 auto duration = duration_cast<std::chrono::microseconds>(stop - start);
-                std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
-                toFile(fileName, duration.count());
+                toFile(fileName, structureName,duration.count());
                 break;
             }
         default: {
@@ -112,78 +116,52 @@ int main() {
     DoublyLinkedList<int> doublyLinkedList;
     ArrayList<int> arrayList;
 
-    constexpr int testValue=20;
-    constexpr int testIndex=1;
-
     //generate random numbers to file
     for (int i=0; i<10; i++) {
+        int testIndex=1;
+        int testValue=20;
         int step= 5000;
-        generateRandomNumbersToFile((5000 + i*step));
+        int number = step + i*step;
+        generateRandomNumbersToFile(number);
+
+        //read and load data to structures
+        std::filesystem::path filePath = std::filesystem::current_path() / (std::to_string(number) + ".txt");
+        std::ifstream RandomNumbersFile(filePath);
+        if (!RandomNumbersFile) {
+            std::cerr << "Error: Could not open file " << filePath << "\n";
+            return 1;
+        }
+        int element;
+        while (RandomNumbersFile >> element) {
+            singlyLinkedList.push_back(element);
+            doublyLinkedList.push_back(element);
+            arrayList.push_back(element);
+        }
+        RandomNumbersFile.close();
+
+        toFile("push_first.txt", std::to_string(number), 0, true);
+        toFile("push_last.txt", std::to_string(number), 0, true);
+        toFile("push.txt", std::to_string(number), 0, true);
+        toFile("remove_first.txt", std::to_string(number), 0, true);
+        toFile("remove_last.txt",std::to_string(number),0, true);
+        toFile("remove.txt", std::to_string(number), 0, true);
+        performanceTests(singlyLinkedList, "Singly linked list:", 1, testValue);
+        performanceTests(singlyLinkedList, "Singly linked list",2, testValue);
+        performanceTests(singlyLinkedList, "Singly linked list", 3, testValue, testIndex);
+        performanceTests(singlyLinkedList,"Singly linked list", 4);
+        performanceTests(singlyLinkedList, "Singly linked list", 5);
+        performanceTests(singlyLinkedList, "Singly linked list",6, testIndex);
+        performanceTests(doublyLinkedList, "Doubly linked list",1, testValue);
+        performanceTests(doublyLinkedList,"Doubly linked list", 2, testValue);
+        performanceTests(doublyLinkedList, "Doubly linked list",3, testValue, testIndex);
+        performanceTests(doublyLinkedList, "Doubly linked list", 4);
+        performanceTests(doublyLinkedList, "Doubly linked list",5);
+        performanceTests(doublyLinkedList, "Doubly linked list",6, testIndex);
+        performanceTests(arrayList,"Array list",  1, testValue);
+        performanceTests(arrayList, "Array list", 2, testValue);
+        performanceTests(arrayList, "Array list",3, testValue, testIndex);
+        performanceTests(arrayList, "Array list", 4);
+        performanceTests(arrayList, "Array list",5);
+        performanceTests(arrayList, "Array list",6, testIndex);
     }
-
-    //read and load data to structures
-    std::filesystem::path filePath = std::filesystem::current_path() / "5000.txt";
-    std::ifstream RandomNumbersFile(filePath);
-    if (!RandomNumbersFile) {
-        std::cerr << "Error: Could not open file " << filePath << "\n";
-        return 1;
-    }
-
-    int element;
-    while (RandomNumbersFile >> element) {
-        singlyLinkedList.push_back(element);
-        doublyLinkedList.push_back(element);
-        arrayList.push_back(element);
-    }
-    RandomNumbersFile.close();
-
-    // leaving this for now just to make sure writing to files works properly
-    std::cout<<"\nTests for pushing first element\n";
-    std::cout<<"Singly linked list:\n";
-    performance_test(singlyLinkedList, "push_first.txt", 1, testValue);
-    std::cout<<"Doubly linked list:\n";
-    performance_test(doublyLinkedList, "push_first.txt",1, testValue);
-    std::cout<<"Array list:\n";
-    performance_test(arrayList,"push_first.txt",  1, testValue);
-
-    std::cout << "\nTests for pushing last element\n";
-    std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, "push_back.txt",2, testValue);
-    std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList,"push_back.txt", 2, testValue);
-    std::cout << "Array list:\n";
-    performance_test(arrayList, "push_back.txt", 2, testValue);
-
-    std::cout << "\nTests for pushing at a specific index\n";
-    std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, "push.txt", 3, testValue, testIndex);
-    std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, "push.txt",3, testValue, testIndex);
-    std::cout << "Array list:\n";
-    performance_test(arrayList, "push.txt",3, testValue, testIndex);
-
-    std::cout << "\nTests for removing first element\n";
-    std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList,"remove_first.txt", 4);
-    std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, "remove_first.txt", 4);
-    std::cout << "Array list:\n";
-    performance_test(arrayList, "remove_first.txt", 4);
-
-    std::cout << "\nTests for removing last element\n";
-    std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, "remove_last.txt", 5);
-    std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, "remove_last.txt",5);
-    std::cout << "Array list:\n";
-    performance_test(arrayList, "remove_last.txt",5);
-
-    std::cout << "\nTests for removing a specific element\n";
-    std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, "remove.txt",6, testIndex);
-    std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, "remove.txt",6, testIndex);
-    std::cout << "Array list:\n";
-    performance_test(arrayList, "remove.txt",6, testIndex);
-
 }
