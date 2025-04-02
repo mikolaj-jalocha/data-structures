@@ -1,13 +1,27 @@
 #include "include/singly_linked_list.h"
 #include "include/doubly_linked_list.h"
 #include "include/array_list.h"
+#include "include/random_numbers_generator.h"
+#include <filesystem>
+#include <fstream>
 #include <vector>
 #include <chrono>
 
+//TODO: enhance writing to file logic
+//TODO: improve overall structure and maybe move performance tests to separate file
+
+void toFile(const std::string& fileName, long long duration) {
+    std::ofstream file(fileName, std::ios::app);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << fileName << std::endl;
+    }
+    file << duration << "\n";
+    file.close();
+}
 
 //attempt to perform time tests
 template<typename T>
-void performance_test(T& structure, int operation, int n = 0, int index = 0) {
+void performance_test(T& structure, const std::string& fileName, int operation, int n = 0, int index = 0) {
     //create copies of structure to perform reliable test for each one operation
     std::vector<T> copies(1000, structure);
 
@@ -21,7 +35,11 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
             }
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+            
+            // leaving this line now just to make sure writing to files works properly 
             std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+            
+            toFile(fileName, duration.count());
             break;
         }
         case 2: {
@@ -32,6 +50,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
            std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+            toFile(fileName, duration.count());
             break;
         }
         case 3: {
@@ -42,6 +61,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
             std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+            toFile(fileName, duration.count());
             break;
         }
         case 4: {
@@ -52,6 +72,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
             auto stop= std::chrono::high_resolution_clock::now();
             auto duration = duration_cast<std::chrono::microseconds>(stop - start);
             std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+            toFile(fileName, duration.count());
             break;
         }
         case 5:
@@ -63,6 +84,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
                 auto stop= std::chrono::high_resolution_clock::now();
                 auto duration = duration_cast<std::chrono::microseconds>(stop - start);
                 std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+                toFile(fileName, duration.count());
                 break;
             }
 
@@ -74,6 +96,7 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
                 auto stop= std::chrono::high_resolution_clock::now();
                 auto duration = duration_cast<std::chrono::microseconds>(stop - start);
                 std::cout << "Perfomance time: " << duration.count() << " microseconds." << std::endl;
+                toFile(fileName, duration.count());
                 break;
             }
         default: {
@@ -82,70 +105,85 @@ void performance_test(T& structure, int operation, int n = 0, int index = 0) {
     }
 };
 
+
 int main() {
+    //initialize lists and test values
     SinglyLinkedList<int> singlyLinkedList;
     DoublyLinkedList<int> doublyLinkedList;
     ArrayList<int> arrayList;
 
-    for (int i=0; i<10; i++) {
-        singlyLinkedList.push_back(i);
-        doublyLinkedList.push_back(i);
-        arrayList.push_back(i);
-    }
-
-    singlyLinkedList.display();
-    arrayList.display();
-    doublyLinkedList.display();
-
     constexpr int testValue=20;
     constexpr int testIndex=1;
 
+    //generate random numbers to file
+    for (int i=0; i<10; i++) {
+        int step= 5000;
+        generateRandomNumbersToFile((5000 + i*step));
+    }
+
+    //read and load data to structures
+    std::filesystem::path filePath = std::filesystem::current_path() / "5000.txt";
+    std::ifstream RandomNumbersFile(filePath);
+    if (!RandomNumbersFile) {
+        std::cerr << "Error: Could not open file " << filePath << "\n";
+        return 1;
+    }
+
+    int element;
+    while (RandomNumbersFile >> element) {
+        singlyLinkedList.push_back(element);
+        doublyLinkedList.push_back(element);
+        arrayList.push_back(element);
+    }
+    RandomNumbersFile.close();
+
+    // leaving this for now just to make sure writing to files works properly
     std::cout<<"\nTests for pushing first element\n";
     std::cout<<"Singly linked list:\n";
-    performance_test(singlyLinkedList, 1, testValue);
+    performance_test(singlyLinkedList, "push_first.txt", 1, testValue);
     std::cout<<"Doubly linked list:\n";
-    performance_test(doublyLinkedList, 1, testValue);
+    performance_test(doublyLinkedList, "push_first.txt",1, testValue);
     std::cout<<"Array list:\n";
-    performance_test(arrayList, 1, testValue);
+    performance_test(arrayList,"push_first.txt",  1, testValue);
 
     std::cout << "\nTests for pushing last element\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 2, testValue);
+    performance_test(singlyLinkedList, "push_back.txt",2, testValue);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 2, testValue);
+    performance_test(doublyLinkedList,"push_back.txt", 2, testValue);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 2, testValue);
+    performance_test(arrayList, "push_back.txt", 2, testValue);
 
     std::cout << "\nTests for pushing at a specific index\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 3, testValue, testIndex);
+    performance_test(singlyLinkedList, "push.txt", 3, testValue, testIndex);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 3, testValue, testIndex);
+    performance_test(doublyLinkedList, "push.txt",3, testValue, testIndex);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 3, testValue, testIndex);
+    performance_test(arrayList, "push.txt",3, testValue, testIndex);
 
     std::cout << "\nTests for removing first element\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 4);
+    performance_test(singlyLinkedList,"remove_first.txt", 4);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 4);
+    performance_test(doublyLinkedList, "remove_first.txt", 4);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 4);
+    performance_test(arrayList, "remove_first.txt", 4);
 
     std::cout << "\nTests for removing last element\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 5);
+    performance_test(singlyLinkedList, "remove_last.txt", 5);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 5);
+    performance_test(doublyLinkedList, "remove_last.txt",5);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 5);
+    performance_test(arrayList, "remove_last.txt",5);
 
     std::cout << "\nTests for removing a specific element\n";
     std::cout << "Singly linked list:\n";
-    performance_test(singlyLinkedList, 6, testIndex);
+    performance_test(singlyLinkedList, "remove.txt",6, testIndex);
     std::cout << "Doubly linked list:\n";
-    performance_test(doublyLinkedList, 6, testIndex);
+    performance_test(doublyLinkedList, "remove.txt",6, testIndex);
     std::cout << "Array list:\n";
-    performance_test(arrayList, 6, testIndex);
+    performance_test(arrayList, "remove.txt",6, testIndex);
 
 }
