@@ -23,11 +23,11 @@ public:
     [[nodiscard]] bool isEmpty() const;
 
     void doubleCapacity();
-    void pushBack(T newElement);
-    void pushFirst(T newElement);
-    void push(T newElement, int index);
-    void removeLast();
-    void removeFirst();
+    void push_back(T newElement);
+    void push_first(T newElement);
+    void push(int index, T newElement);
+    void remove_last();
+    void remove_first();
     void remove(int index);
     int search(T sElement) const;
 
@@ -83,7 +83,7 @@ template<typename T>
 }
 
 template<typename T>
-void ArrayList<T>::pushBack(T newElement) {
+void ArrayList<T>::push_back(T newElement) {
     if (size >= capacity) {
         doubleCapacity();
     }
@@ -92,7 +92,7 @@ void ArrayList<T>::pushBack(T newElement) {
 }
 
 template<typename T>
-void ArrayList<T>::pushFirst(T newElement) {
+void ArrayList<T>::push_first(T newElement) {
     if (size>=capacity) {
         doubleCapacity();
     }
@@ -104,7 +104,7 @@ void ArrayList<T>::pushFirst(T newElement) {
 }
 
 template<typename T>
-void ArrayList<T>::push(T newElement, int index) {
+void ArrayList<T>::push(int index, T newElement) {
     if (index<0 || index>size) {
         throw std::out_of_range("Index out of range");
     }
@@ -119,14 +119,14 @@ void ArrayList<T>::push(T newElement, int index) {
 }
 
 template<typename T>
-void ArrayList<T>::removeLast() {
+void ArrayList<T>::remove_last() {
     if (size > 0) {
         size--;
     }
 }
 
 template<typename T>
-void ArrayList<T>::removeFirst() {
+void ArrayList<T>::remove_first() {
     if (size>0) {
         for (int i=0; i<size-1; i++) {
             element[i]=element[i+1];
