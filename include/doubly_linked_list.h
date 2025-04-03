@@ -119,7 +119,6 @@ void DoublyLinkedList<T>::push_back(T e) {
     size++;
 }
 
-//TODO: potential improvement: when index is larger that size/2 start iterating from end.
 template<typename T>
 void DoublyLinkedList<T>::push(int index, T e) {
     if (index < 0 || index > size)
@@ -128,9 +127,17 @@ void DoublyLinkedList<T>::push(int index, T e) {
     if (index == 0) return push_first(e);
     if (index == size) return push_back(e);
 
-    MyDoubleNode<T>* current = head;
-    for (int i = 0; i < index - 1; i++) {
-        current = current->next;
+    MyDoubleNode<T>* current = nullptr;
+    if (index > size/2) {
+        current = tail;
+        for (int i = size-1; i > index-1; i--) {
+            current = current->previous;
+        }
+    } else {
+        current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current->next;
+        }
     }
 
     auto* temp = new MyDoubleNode<T>;
@@ -145,7 +152,6 @@ void DoublyLinkedList<T>::push(int index, T e) {
 
     size++;
 }
-
 
 template<typename T>
 T DoublyLinkedList<T>::remove_first() {
@@ -177,9 +183,6 @@ T DoublyLinkedList<T>::remove_last() {
     return data;
 }
 
-
-
-//TODO: potential improvement: when index is larger that size/2 start iterating from end.
 template<typename T>
 T DoublyLinkedList<T>::remove(const int index) {
     if (index < 0 || index >= size)
@@ -188,9 +191,17 @@ T DoublyLinkedList<T>::remove(const int index) {
     if (index == 0) return remove_first();
     if (index == size - 1) return remove_last();
 
-    MyDoubleNode<T>* temp = head;
-    for (int i = 0; i < index; i++) {
-        temp = temp->next;
+    MyDoubleNode<T>* temp = nullptr;
+    if (index > size/2) {
+        temp = tail;
+        for (int i = size-1; i > index-1; i--) {
+            temp = temp->previous;
+        }
+    } else {
+        temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp->next;
+        }
     }
 
     T data = temp->element;
@@ -236,15 +247,15 @@ T DoublyLinkedList<T>::get(const int index) {
 
     if (index == 0) return head->element;
     if (index == size - 1) return tail->element;
-
+    MyDoubleNode<T>* temp = nullptr;
     if (index > size/2) {
-        MyDoubleNode<T>* temp = tail;
+        temp = tail;
         for (int i = size-1; i > index; i--) {
             temp = temp->previous;
         }
         return temp->element;
     } else {
-        MyDoubleNode<T>* temp = head;
+        temp = head;
          for (int i = 0; i < index; i++) {
              temp = temp->next;
          }
