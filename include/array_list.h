@@ -22,7 +22,6 @@ public:
     [[nodiscard]] int getSize() const;
     [[nodiscard]] bool isEmpty() const;
 
-    void double_capacity();
     void push_back(T newElement);
     void push_first(T newElement);
     void push(int index, T newElement);
@@ -30,6 +29,7 @@ public:
     void remove_first();
     void remove(int index);
     int search(T sElement) const;
+    T get(int index);
 
 };
 template<typename T>
@@ -72,18 +72,14 @@ bool ArrayList<T>::isEmpty() const {
 }
 
 template<typename T>
-    void ArrayList<T>::double_capacity() {
-    capacity *= 2;
-    T* newArray = new T[capacity];
-    std::copy(element, element+size, newArray);
-    delete[] element;
-    element = newArray;
-}
-
-template<typename T>
 void ArrayList<T>::push_back(T newElement) {
     if (size >= capacity) {
-        double_capacity();
+        capacity *= 2;
+        T* newArray = new T[capacity];
+        //using std::copy instead of for loop to shorten the operating time
+        std::copy(element, element+size, newArray);
+        delete[] element;
+        element = newArray;
     }
     element[size] = newElement;
     size++;
@@ -159,6 +155,13 @@ int ArrayList<T>::search(T sElement) const{
     }
     std::cout<<"Element not found"<<std::endl;
     return -1;
+}
+
+template<typename T>
+T ArrayList<T>::get(const int index) {
+    if (index < 0 || index >= size)
+        throw std::out_of_range("Index out of range");
+    return element[index];
 }
 
 #endif //ARRAY_LIST_H

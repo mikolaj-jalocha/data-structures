@@ -15,7 +15,7 @@ void toFile(const std::string& fileName, const std::string& sectionName, long lo
     if (!newSet) {
         file << sectionName << ":\n" << duration << "\n";
     }else {
-        file << "\nTime in microseconds for "<<sectionName<<" data set.\n\n";
+        file << "\nTime in nanoseconds for "<<sectionName<<" data set.\n\n";
     }
     file.close();
 }
