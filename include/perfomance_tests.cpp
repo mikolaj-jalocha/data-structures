@@ -15,7 +15,7 @@
 template<typename T>
 void performanceTests(T& structure, const std::string& structureName, int operation, int n, int index) {
     //create copies of structure to perform reliable test for each one operation
-    std::vector<T> copies(1000, structure);
+    std::vector<T> copies(100, structure);
     std::string fileName= " ";
 
     //switch case for all methods
@@ -24,44 +24,44 @@ void performanceTests(T& structure, const std::string& structureName, int operat
             fileName = "push_first.txt";
             auto start = std::chrono::high_resolution_clock::now();
             //loop due to the very short duration of the operation
-            for (int i=0; i<1000; i++) {
+            for (int i=0; i<100; i++) {
                 copies[i].push_first(n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
-            auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
             toFile(fileName, structureName, duration.count());
             break;
         }
         case 2: {
             fileName = "push_last.txt";
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i=0; i<1000; i++) {
+            for (int i=0; i<100; i++) {
                 copies[i].push_back(n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
-            auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
             toFile(fileName,structureName, duration.count());
             break;
         }
         case 3: {
             fileName = "push.txt";
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i=0; i<1000; i++) {
+            for (int i=0; i<100; i++) {
                 copies[i].push(index, n);
             }
             auto stop= std::chrono::high_resolution_clock::now();
-            auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
             toFile(fileName,structureName, duration.count());
             break;
         }
         case 4: {
             fileName = "remove_first.txt";
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i=0; i<1000; i++) {
+            for (int i=0; i<100; i++) {
                 copies[i].remove_first();
             }
             auto stop= std::chrono::high_resolution_clock::now();
-            auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
             toFile(fileName,structureName, duration.count());
             break;
         }
@@ -69,11 +69,11 @@ void performanceTests(T& structure, const std::string& structureName, int operat
             {
                 fileName = "remove_last.txt";
                 auto start = std::chrono::high_resolution_clock::now();
-                for (int i=0; i<1000; i++) {
+                for (int i=0; i<100; i++) {
                     copies[i].remove_last();
                 }
                 auto stop= std::chrono::high_resolution_clock::now();
-                auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+                auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
                 toFile(fileName, structureName,duration.count());
                 break;
             }
@@ -81,14 +81,36 @@ void performanceTests(T& structure, const std::string& structureName, int operat
         case 6: {
                 fileName = "remove.txt";
                 auto start = std::chrono::high_resolution_clock::now();
-                for (int i=0; i<1000; i++) {
+                for (int i=0; i<100; i++) {
                     copies[i].remove(index);
                 }
                 auto stop= std::chrono::high_resolution_clock::now();
-                auto duration = duration_cast<std::chrono::microseconds>(stop - start);
+                auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
                 toFile(fileName, structureName,duration.count());
                 break;
             }
+        case 7: {
+            fileName = "search.txt";
+            auto start = std::chrono::high_resolution_clock::now();
+            for (int i=0; i<100; i++) {
+                copies[i].search(n);
+            }
+            auto stop= std::chrono::high_resolution_clock::now();
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
+            toFile(fileName, structureName,duration.count());
+            break;
+        }
+        case 8: {
+            fileName = "get.txt";
+            auto start = std::chrono::high_resolution_clock::now();
+            for (int i=0; i<100; i++) {
+                copies[i].get(index);
+            }
+            auto stop= std::chrono::high_resolution_clock::now();
+            auto duration = duration_cast<std::chrono::nanoseconds>(stop - start);
+            toFile(fileName, structureName,duration.count());
+            break;
+        }
         default: {
             std::cerr << "Unknown operation" << std::endl; break;
         }
@@ -129,23 +151,33 @@ void testsForGeneratedNumbers(){
         toFile("remove_first.txt", std::to_string(number), 0, true);
         toFile("remove_last.txt",std::to_string(number),0, true);
         toFile("remove.txt", std::to_string(number), 0, true);
+        toFile("search.txt",std::to_string(number),0, true);
+        toFile("get.txt", std::to_string(number), 0, true);
         performanceTests(singlyLinkedList, "Singly linked list:", 1, testValue);
         performanceTests(singlyLinkedList, "Singly linked list",2, testValue);
         performanceTests(singlyLinkedList, "Singly linked list", 3, testValue, testIndex);
         performanceTests(singlyLinkedList,"Singly linked list", 4);
         performanceTests(singlyLinkedList, "Singly linked list", 5);
         performanceTests(singlyLinkedList, "Singly linked list",6, testIndex);
+        performanceTests(singlyLinkedList, "Singly linked list", 7, testValue);
+        performanceTests(singlyLinkedList, "Singly linked list",8, testIndex);
+
         performanceTests(doublyLinkedList, "Doubly linked list",1, testValue);
         performanceTests(doublyLinkedList,"Doubly linked list", 2, testValue);
         performanceTests(doublyLinkedList, "Doubly linked list",3, testValue, testIndex);
         performanceTests(doublyLinkedList, "Doubly linked list", 4);
         performanceTests(doublyLinkedList, "Doubly linked list",5);
         performanceTests(doublyLinkedList, "Doubly linked list",6, testIndex);
+        performanceTests(doublyLinkedList, "Doubly linked list",7, testValue);
+        performanceTests(doublyLinkedList, "Doubly linked list",8, testIndex);
+
         performanceTests(arrayList,"Array list",  1, testValue);
         performanceTests(arrayList, "Array list", 2, testValue);
         performanceTests(arrayList, "Array list",3, testValue, testIndex);
         performanceTests(arrayList, "Array list", 4);
         performanceTests(arrayList, "Array list",5);
         performanceTests(arrayList, "Array list",6, testIndex);
+        performanceTests(arrayList, "Array list",7, testValue);
+        performanceTests(arrayList, "Array list",8, testIndex);
     }
 }

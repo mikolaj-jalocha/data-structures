@@ -22,7 +22,6 @@ public:
     [[nodiscard]] int getSize() const;
     [[nodiscard]] bool isEmpty() const;
 
-    void doubleCapacity();
     void push_back(T newElement);
     void push_first(T newElement);
     void push(int index, T newElement);
@@ -30,6 +29,7 @@ public:
     void remove_first();
     void remove(int index);
     int search(T sElement) const;
+    T get(int index);
 
 };
 template<typename T>
@@ -72,20 +72,14 @@ bool ArrayList<T>::isEmpty() const {
 }
 
 template<typename T>
-    void ArrayList<T>::doubleCapacity() {
-    capacity *= 2;
-    T* newArray = new T[capacity];
-    for (int i=0; i<size; i++) {
-        newArray[i] = element[i];
-    }
-    delete[] element;
-    element = newArray;
-}
-
-template<typename T>
 void ArrayList<T>::push_back(T newElement) {
     if (size >= capacity) {
-        doubleCapacity();
+        capacity *= 2;
+        T* newArray = new T[capacity];
+        //using std::copy instead of for loop to shorten the operating time
+        std::copy(element, element+size, newArray);
+        delete[] element;
+        element = newArray;
     }
     element[size] = newElement;
     size++;
@@ -94,11 +88,12 @@ void ArrayList<T>::push_back(T newElement) {
 template<typename T>
 void ArrayList<T>::push_first(T newElement) {
     if (size>=capacity) {
-        doubleCapacity();
+        capacity *= 2;
     }
-    for (int i = size; i > 0; i--) {
-        element[i] = element[i - 1];
-    }
+    T* newArray = new T[capacity];
+    std::copy(element, element+size, newArray+1);
+    delete[] element;
+    element = newArray;
     element[0]= newElement;
     size++;
 }
@@ -109,12 +104,14 @@ void ArrayList<T>::push(int index, T newElement) {
         throw std::out_of_range("Index out of range");
     }
     if (size>=capacity) {
-        doubleCapacity();
+        capacity *= 2;
     }
-    for (int i = size; i > index; i--) {
-        element[i] = element[i - 1];
-    }
-    element[index]= newElement;
+        T* newArray = new T[capacity];
+        std::copy(element, element+index,newArray);
+        newArray[index] = newElement;
+        std::copy(element+index, element+size, newArray+index+1);
+        delete[] element;
+        element = newArray;
     size++;
 }
 
@@ -128,9 +125,10 @@ void ArrayList<T>::remove_last() {
 template<typename T>
 void ArrayList<T>::remove_first() {
     if (size>0) {
-        for (int i=0; i<size-1; i++) {
-            element[i]=element[i+1];
-        }
+        T* newArray = new T[capacity];
+        std::copy(element+1, element+size, newArray);
+        delete[] element;
+        element = newArray;
         size--;
     }
 }
@@ -140,9 +138,11 @@ void ArrayList<T>::remove(int index) {
     if (index<0 || index>=size) {
         throw std::out_of_range("Index out of range");
     }
-    for (int i=index;i<size-1;i++) {
-        element[i]=element[i+1];
-    }
+    T* newArray = new T[capacity];
+    std::copy(element, element+index, newArray);
+    std::copy(element+index+1, element+size, newArray+index);
+    delete[] element;
+    element = newArray;
     size--;
 }
 
@@ -155,6 +155,13 @@ int ArrayList<T>::search(T sElement) const{
     }
     std::cout<<"Element not found"<<std::endl;
     return -1;
+}
+
+template<typename T>
+T ArrayList<T>::get(const int index) {
+    if (index < 0 || index >= size)
+        throw std::out_of_range("Index out of range");
+    return element[index];
 }
 
 #endif //ARRAY_LIST_H
