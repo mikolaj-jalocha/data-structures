@@ -120,6 +120,13 @@ void ArrayList<T>::remove_last() {
     if (size > 0) {
         size--;
     }
+    if (2*size<capacity) {
+        capacity = size;
+        T* newArray = new T[capacity];
+        std::copy(element, element+size, newArray);
+        delete[] element;
+        element = newArray;
+    }
 }
 
 template<typename T>
