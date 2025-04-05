@@ -12,6 +12,6 @@ unsigned long long performanceTests(T& structure, int operation, int n, int inde
 template<typename T>
 void testsForGeneratedNumbers(T& structure, const std::string& structureName, int operationChoice);
 
-void runStructureMenu();
+int runStructureMenu();
 
 #endif //PERFORMANCE_TESTS_H
