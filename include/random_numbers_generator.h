@@ -5,7 +5,10 @@
 #ifndef RANDOM_NUMBERS_GENERATOR_H
 #define RANDOM_NUMBERS_GENERATOR_H
 
-int generateRandomNumbersToFile(int count);
+#include <string>
+
+void generateRandomNumbersToFile(int count,const std::string& number);
+int getTestValueFromFile(int count, const std::string& number);
 int generateRandomIndex(int count);
 
 #endif //RANDOM_NUMBERS_GENERATOR_H
