@@ -5,6 +5,7 @@
 #ifndef RANDOM_NUMBERS_GENERATOR_H
 #define RANDOM_NUMBERS_GENERATOR_H
 
-void generateRandomNumbersToFile(int count);
+int generateRandomNumbersToFile(int count);
+int generateRandomIndex(int count);
 
 #endif //RANDOM_NUMBERS_GENERATOR_H
