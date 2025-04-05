@@ -1,32 +1,32 @@
-# Struktury Danych – Projekt
+# Data Structures – Project
 
-Projekt przygotowany na zajęcia **projektowe z przedmiotu Struktury Danych** na **Politechnice Wrocławskiej**. Celem projektu była implementacja oraz analiza wydajności trzech podstawowych struktur danych w języku **C++**.
+The project was prepared for the **Data Structures course project** at **Wrocław University of Science and Technology**. The goal of the project was the implementation and performance analysis of three basic data structures in **C++**.
 
-## Zaimplementowane struktury danych
+## Implemented Data Structures
 
-1. **Lista jednokierunkowa**  
-2. **Lista dwukierunkowa**  
-3. **Tablica dynamiczna**
+1. **Singly Linked List**  
+2. **Doubly Linked List**  
+3. **Dynamic Array**
 
-## Cele projektu
+## Project Objectives
 
-- Implementacja wybranych struktur danych od podstaw w języku C++
-- Przeprowadzenie pomiarów czasów wykonywania podstawowych operacji (dodawanie, usuwanie, wyszukiwanie itd.)
-- Porównanie wydajności poszczególnych struktur
-- Opracowanie wniosków na podstawie uzyskanych wyników
+- Implement selected data structures from scratch in C++
+- Measure the execution time of basic operations (insertion, deletion, search, etc.)
+- Compare the performance of each structure
+- Draw conclusions based on the obtained results
 
-## Sprawozdanie
+## Report
 
-Szczegółowe wyniki pomiarów oraz analiza porównawcza znajdują się w sprawozdaniu, które dostępne jest [tutaj](#)  
+Detailed measurement results and comparative analysis can be found in the report available [here](#)  
 
-## Uruchomienie
+## Running the Project
 
-1. Sklonuj repozytorium:
+1. Clone the repository:
    ```bash
    git clone https://github.com/your-user/your-repo.git
    cd your-repo
    ```
-2. Skompiluj program:
+2. Compile the program:
    ```bash
    g++ -std=c++17 main.cpp -o struktury
    ./struktury
