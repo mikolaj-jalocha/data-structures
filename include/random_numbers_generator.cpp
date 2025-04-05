@@ -14,8 +14,7 @@ void generateRandomNumbersToFile(int count) {
     std::string fileName = std::to_string(count) + ".txt";
 
     if (std::filesystem::exists(fileName)) {
-        std::cout << "File " << fileName << " already exist. If you want to generate new data, delete mentioned file.\n";
-        return;
+        std::filesystem::remove(fileName);
     }
 
     std::ofstream outFile(fileName);
