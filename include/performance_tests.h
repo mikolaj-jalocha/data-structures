@@ -7,6 +7,11 @@
 #include <string>
 
 template<typename T>
-void performanceTests(T& structure, const std::string& structureName, int operation, int n = 0, int index = 0);
-void testsForGeneratedNumbers();
+unsigned long long performanceTests(T& structure, int operation, int n, int index);
+
+template<typename T>
+void testsForGeneratedNumbers(T& structure, const std::string& structureName, int operationChoice);
+
+void runStructureMenu();
+
 #endif //PERFORMANCE_TESTS_H
