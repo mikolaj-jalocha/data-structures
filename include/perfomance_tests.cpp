@@ -14,7 +14,7 @@
 void runStructureMenu() {
     int structureChoice;
     int operationChoice;
-    std::cout<<"Choose the structure:\n1-Singly linked list\n2-Doubly linked list\n3-Array list\n";
+    std::cout<<"Choose the structure:\n1-Array list\n2-Singly linked list\n3-Doubly linked list\n";
     std::cin >> structureChoice;
     std::cout << "Choose the operation:\n1 - Push first\n2 - Push last\n3 - Push at index\n4 - Remove first\n5 - Remove last\n6 - Remove at index\n7 - Search\n";
     std::cin>>operationChoice;
@@ -130,7 +130,9 @@ void testsForGeneratedNumbers(T& structure, const std::string& structureName, in
     for (int i=0; i<12; i++) {
         int step= 5000;
         int number = step + i*step;
-        generateRandomNumbersToFile(number);
+        int testValue = generateRandomNumbersToFile(number);
+        int testIndex = generateRandomIndex(number);
+
 
         //read and load data to structures
         std::filesystem::path filePath = std::filesystem::current_path() / (std::to_string(number) + ".txt");
@@ -146,8 +148,6 @@ void testsForGeneratedNumbers(T& structure, const std::string& structureName, in
 
         std::vector<unsigned long long> resultSet;
         for (int j=0; j<3; j++) {
-            int testValue=20;
-            int testIndex=1;
             unsigned long long result = performanceTests(structure, operationChoice, testValue, testIndex);
             resultSet.push_back(result);
         }
