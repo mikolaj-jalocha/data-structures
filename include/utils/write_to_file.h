@@ -7,6 +7,6 @@
 
 #include <iostream>
 
-void toFile(const std::string& fileName, const std::string& sectionName, long long duration, bool newSet = false);
+void toFile(int operationChoice, const std::string& sectionName, unsigned long long duration,const std::string& dataSet);
 
 #endif //WRITE_TO_FILE_H
