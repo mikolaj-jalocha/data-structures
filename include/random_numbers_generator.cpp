@@ -20,53 +20,48 @@ void generateRandomNumbersToFile(int count, const std::string& number) {
     std::ofstream outFile(fileName);
     if (!outFile.is_open()) {
         std::cerr << "Can't open the file to write: " << fileName << "\n";
+        return;
     }
 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dist(INT32_MIN, INT32_MAX);
 
+    std::vector<int> values;
     for (int i = 0; i < count; ++i) {
         int randomNumber = dist(gen);
+        values.push_back(randomNumber);
         outFile << randomNumber << "\n";
     }
 
     outFile.close();
     std::cout << "Generated " << count << " random numbers and saved them to the file: " << fileName << "\n";
-}
 
+    //Generate value for testing methods
+    if (!values.empty()) {
+        std::uniform_int_distribution<int> int_dist(0, static_cast<int>(values.size() - 1));
+        int testValue = values[int_dist(gen)];
 
-int getTestValueFromFile(int count, const std::string& number) {
-    std::string fileName = std::to_string(count) + "_"+ number + ".txt";
+        std::string fileNumbersName = "random_numbers.txt";
+        std::ofstream outTestFile(fileNumbersName, std::ios::app);
+        if (!outTestFile.is_open()) {
+            std::cerr << "Can't open the file to write: " << fileNumbersName << "\n";
+            return;
+        }
 
-    std::ifstream inFile(fileName);
-    if (!inFile.is_open()) {
-        std::cerr << "Can't open the file to read: " << fileName << "\n";
-        return -1;
+        outTestFile << testValue << "\n";
+        outTestFile.close();
     }
 
-    std::vector<int> values;
-    int value;
-    while (inFile >> value) {
-        values.push_back(value);
-    }
-
-    inFile.close();
-
-    if (values.empty()) {
-        std::cerr << "No values found in file.\n";
-        return -1;
-    }
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, values.size() - 1);
-    return values[dist(gen)];
-}
-
-int generateRandomIndex(int count) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    //Generate index for testing methods
     std::uniform_int_distribution<int> indexDist(0, count - 1);
-    return indexDist(gen);
+    int testIndex = indexDist(gen);
+    std::string fileIndexName = "random_index.txt";
+    std::ofstream outTestFile(fileIndexName, std::ios::app);
+    if (!outTestFile.is_open()) {
+        std::cerr << "Can't open the file to write: " << fileIndexName << "\n";
+        return;
+    }
+    outTestFile << testIndex << "\n";
+    outTestFile.close();
 }

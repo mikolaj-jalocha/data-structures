@@ -150,15 +150,24 @@ unsigned long long performanceTests(T& structure, int operation, int n, int inde
 
 template<typename T>
 void testsForGeneratedNumbers(T& structure, const std::string& structureName, int operationChoice){
+    //open files with test values and test indexes
+    std::ifstream testValuesFile("random_numbers.txt");
+    std::ifstream testIndexFile("random_index.txt");
+    if (!testValuesFile) {
+        std::cerr << "Error: Could not open random_numbers.txt\n";
+        return;
+    }
+    if (!testIndexFile) {
+        std::cerr << "Error: Could not open random_index.txt\n";
+        return;
+    }
     //generate random numbers to file
     for (int i=0;i<12;i++) {
         constexpr int step= 5000;
         const int number = step + i*step;
-        int testIndex = generateRandomIndex(number);
 
         unsigned long long result=0;
         for (int j=1; j<4; j++) {
-            int testValue = getTestValueFromFile(number, std::to_string(j));
 
             //read and load data to structures
             std::filesystem::path filePath = std::filesystem::current_path() / (std::to_string(number) + "_" + std::to_string(j) + ".txt");
@@ -171,6 +180,12 @@ void testsForGeneratedNumbers(T& structure, const std::string& structureName, in
                 structure.push_back(element);
             }
             RandomNumbersFile.close();
+
+            //load test index and value from files
+            int testValue;
+            testValuesFile >> testValue;
+            int testIndex;
+            testIndexFile >> testIndex;
 
             result += performanceTests(structure, operationChoice, testValue, testIndex);
         }
