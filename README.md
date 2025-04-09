@@ -31,3 +31,8 @@ Detailed measurement results and comparative analysis can be found in the report
    g++ -std=c++17 main.cpp -o struktury
    ./struktury
    ```
+## Potential improvements:
+
+- support for .csv for results
+- classes that implement data structures could implement shared abstract class thus reducing complexity and making tests easier
+- unit tests for implemented data structures
