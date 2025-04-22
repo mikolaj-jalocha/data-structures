@@ -15,10 +15,6 @@ The project was prepared for the **Data Structures course project** at **Wrocła
 - Compare the performance of each structure
 - Draw conclusions based on the obtained results
 
-## Report
-
-Detailed measurement results and comparative analysis can be found in the report available [here](#)  
-
 ## Running the Project
 
 1. Clone the repository:
