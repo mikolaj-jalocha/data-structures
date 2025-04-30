@@ -3,10 +3,10 @@
 //
 #include "utils/write_to_file.h"
 #include "performance_tests.h"
-#include "singly_linked_list.h"
-#include "doubly_linked_list.h"
-#include "array_list.h"
-#include "random_numbers_generator.h"
+#include "collections/singly_linked_list.h"
+#include "collections/doubly_linked_list.h"
+#include "collections/array_list.h"
+#include "utils/random_numbers_generator.h"
 #include <filesystem>
 #include <fstream>
 #include <vector>
