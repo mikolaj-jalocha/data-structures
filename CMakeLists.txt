@@ -13,4 +13,5 @@ add_executable(DataStructuresLists main.cpp
         include/utils/write_to_file.h
         include/performance_tests.h
         include/perfomance_tests.cpp
+        include/collections/max_priority_queue_doubly_linked_list.h
 )
