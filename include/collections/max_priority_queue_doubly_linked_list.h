@@ -8,18 +8,18 @@
 
 
 template<typename T>
-struct MyDoubleNode {
+struct MyNode {
     T element;
     int priority;
-    MyDoubleNode *next;
-    MyDoubleNode *previous;
+    MyNode *next;
+    MyNode *previous;
 };
 
 template<typename T>
 class MaxPriorityQueueDoublyLinkedList {
 private:
-    MyDoubleNode<T> *head;
-    MyDoubleNode<T> *tail;
+    MyNode<T> *head;
+    MyNode<T> *tail;
     int size;
 
 public:
@@ -29,7 +29,7 @@ public:
 
     ~MaxPriorityQueueDoublyLinkedList();
 
-    [[nodiscard]] int return_size() const;
+    int return_size() const;
 
     [[nodiscard]] bool is_empty() const;
 
@@ -67,7 +67,7 @@ template<typename T>
 MaxPriorityQueueDoublyLinkedList<
     T>::MaxPriorityQueueDoublyLinkedList(const MaxPriorityQueueDoublyLinkedList<T> &other) : head(nullptr),
     tail(nullptr), size(0) {
-    MyDoubleNode<T> *current = other.head;
+    MyNode<T> *current = other.head;
     while (current != nullptr) {
         push_back(current->element, current->priority);
         current = current->next;
@@ -103,13 +103,13 @@ void MaxPriorityQueueDoublyLinkedList<T>::insert(T e, int p) {
         return;
     }
 
-    auto *new_node = new MyDoubleNode<T>;
+    auto *new_node = new MyNode<T>;
     new_node->element = e;
     new_node->priority = p;
     new_node->next = nullptr;
     new_node->previous = nullptr;
 
-    MyDoubleNode<T> *current = head;
+    MyNode<T> *current = head;
 
     while (current != nullptr && current->priority >= p) {
         current = current->next;
@@ -134,7 +134,7 @@ void MaxPriorityQueueDoublyLinkedList<T>::insert(T e, int p) {
 
 template<typename T>
 void MaxPriorityQueueDoublyLinkedList<T>::display() {
-    MyDoubleNode<T> *current = head;
+    MyNode<T> *current = head;
     while (current) {
         std::cout << current->element << " -> ";
         current = current->next;
@@ -157,7 +157,7 @@ T MaxPriorityQueueDoublyLinkedList<T>::remove(T e) {
     if (e == this->peek()) return remove_first();
     if (e == this->tail->element) return remove_last();
 
-    MyDoubleNode<T> *temp = head;
+    MyNode<T> *temp = head;
 
     while (temp != nullptr && e != temp->element) {
         temp = temp->next;
@@ -183,7 +183,7 @@ T MaxPriorityQueueDoublyLinkedList<T>::remove_last() {
     if (is_empty()) return T();
 
     T data = tail->element;
-    MyDoubleNode<T> *old_tail = tail;
+    MyNode<T> *old_tail = tail;
     tail = tail->previous;
 
     if (tail) {
@@ -223,7 +223,7 @@ int MaxPriorityQueueDoublyLinkedList<T>::peek_min_priority() {
 
 template<typename T>
 void MaxPriorityQueueDoublyLinkedList<T>::push_first(T e, int p) {
-    auto *temp = new MyDoubleNode<T>;
+    auto *temp = new MyNode<T>;
     temp->element = e;
     temp->priority = p;
     temp->next = nullptr;
@@ -243,7 +243,7 @@ template<typename T>
 void MaxPriorityQueueDoublyLinkedList<T>::push_back(T e, int p) {
     if (is_empty())
         return push_first(e, p);
-    auto *temp = new MyDoubleNode<T>;
+    auto *temp = new MyNode<T>;
     temp->element = e;
     temp->priority = p;
     temp->previous = tail;
@@ -259,7 +259,7 @@ T MaxPriorityQueueDoublyLinkedList<T>::remove_first() {
     }
 
     T data = head->element;
-    MyDoubleNode<T> *old_head = head;
+    MyNode<T> *old_head = head;
     head = head->next;
 
     if (head != nullptr) {
