@@ -1,6 +1,3 @@
-//
-// Created by majam on 02.04.2025.
-//
 #include "write_to_file.h"
 
 #include <fstream>
@@ -8,6 +5,33 @@
 
 void toFile(int operationChoice, const std::string& sectionName, unsigned long long duration,const std::string& dataSet) {
     std::string fileName;
+    if (sectionName == "Max priority queue heap" || sectionName == "Max priority queue doubly linked list") {
+        switch (operationChoice) {
+            case 1: {
+                fileName = "insert.txt";
+                break;
+            }
+            case 2: {
+                fileName = "extract_max.txt";
+                break;
+            }
+            case 3: {
+                fileName = "peek.txt";
+                break;
+            }
+            case 4: {
+                fileName = "modify_key.txt";
+                break;
+            }
+            case 5: {
+                fileName = "return_size.txt";
+                break;
+            }
+            default:
+                std::cerr << "Unknown operation" << std::endl;
+                break;
+        }
+    }else{
     switch (operationChoice) {
         case 1: {
             fileName = "push_first.txt";
@@ -41,6 +65,7 @@ void toFile(int operationChoice, const std::string& sectionName, unsigned long l
             std::cerr << "Unknown operation" << std::endl;
             break;
         }
+    }
     }
 
 
