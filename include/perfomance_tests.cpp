@@ -29,15 +29,20 @@ int runStructureMenu() {
         if (topicChoice==1) {
             std::cout<<"Choose the structure:\n1-Array list\n2-Singly linked list\n3-Doubly linked list\n4-All tests at once\n";
             std::cin >> structureChoice;
-            std::cout << "Choose the operation:\n1 - Push first\n2 - Push last\n3 - Push at index\n4 - Remove first\n5 - Remove last\n6 - Remove at index\n7 - Search\n";
+            if (structureChoice != 4) {
+                std::cout << "Choose the operation:\n1 - Push first\n2 - Push last\n3 - Push at index\n4 - Remove first\n5 - Remove last\n6 - Remove at index\n7 - Search\n";
+                std::cin>>operationChoice;
+            }
         } else if (topicChoice==2) {
             std::cout<<"Choose the structure:\n1-Max priority queue heap\n2-Max priority queue doubly linked list\n3-All tests at once\n";
             std::cin >> structureChoice;
             //adjustment to one switch case
             structureChoice +=4;
-            std::cout << "Choose the operation:\n1 - Insert\n2 - Extract max\n3 - Peek\n4 - Modify key\n5 - Return size\n";
+            if (structureChoice != 7) {
+                std::cout << "Choose the operation:\n1 - Insert\n2 - Extract max\n3 - Peek\n4 - Modify key\n5 - Return size\n";
+                std::cin>>operationChoice;
+            }
         }
-        std::cin>>operationChoice;
 
         switch (structureChoice) {
             case 1: {
