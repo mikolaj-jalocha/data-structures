@@ -115,17 +115,22 @@ void MaxPriorityQueueDoublyLinkedList<T>::insert(T e, int p) {
         current = current->next;
     }
 
-    new_node->next = current;
-    new_node->previous = current->previous;
+    if (current == nullptr) {
+        // Append to tail
+        new_node->previous = tail;
+        tail->next = new_node;
+        tail = new_node;
+    } else {
 
-    if (current->previous != nullptr) {
-        current->previous->next = new_node;
-    }
-    current->previous = new_node;
+        new_node->next = current;
+        new_node->previous = current->previous;
 
-
-    if (current == head) {
-        head = new_node;
+        if (current->previous != nullptr) {
+            current->previous->next = new_node;
+        } else {
+            head = new_node;
+        }
+        current->previous = new_node;
     }
 
     size++;
