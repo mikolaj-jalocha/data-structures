@@ -1,12 +1,14 @@
 # Data Structures – Project
 
-The project was prepared for the **Data Structures course project** at **Wrocław University of Science and Technology**. The goal of the project was the implementation and performance analysis of three basic data structures in **C++**.
+The project was prepared for the **Data Structures course project** at **Wrocław University of Science and Technology**. The goal of the project was the implementation and performance analysis of selected data structures in **C++**.
 
 ## Implemented Data Structures
 
 1. **Singly Linked List**  
 2. **Doubly Linked List**  
 3. **Dynamic Array**
+4. **Priority queue based on Heap**
+5. **Priorty queue based on Doubly Linked List**
 
 ## Project Objectives
 
@@ -32,3 +34,4 @@ The project was prepared for the **Data Structures course project** at **Wrocła
 - support for .csv for results
 - classes that implement data structures could implement shared abstract class thus reducing complexity and making tests easier
 - unit tests for implemented data structures
+- simplifying codebase responsible for measurements
