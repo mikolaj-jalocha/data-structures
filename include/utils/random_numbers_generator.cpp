@@ -64,4 +64,16 @@ void generateRandomNumbersToFile(int count, const std::string& number) {
     }
     outTestFile << testIndex << "\n";
     outTestFile.close();
+
+    //Generate priority for priority queues
+    std::uniform_int_distribution<int> pDist(0, 3*count);
+    int p = pDist(gen);
+    std::string filePName = "random_priority.txt";
+    std::ofstream outPFile(filePName, std::ios::app);
+    if (!outPFile.is_open()) {
+        std::cerr << "Can't open the file to write: " << filePName << "\n";
+        return;
+    }
+    outPFile << p << "\n";
+    outPFile.close();
 }
