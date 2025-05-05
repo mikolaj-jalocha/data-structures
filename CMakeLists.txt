@@ -13,8 +13,8 @@ add_executable(DataStructuresLists main.cpp
         include/utils/write_to_file.h
         include/performance_tests.h
         include/perfomance_tests.cpp
-        include/collections/max_priority_queue_doubly_linked_list.h
-        include/collections/max_priority_queue_heap.h
+        include/collections/priority_queues/max_priority_queue_doubly_linked_list.h
+        include/collections/priority_queues/max_priority_queue_heap.h
         include/tests/priority_queues_tests.h
         include/tests/lists_and_dynamic_array_tests.h
 )
