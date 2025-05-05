@@ -8,8 +8,6 @@
 #include <iostream>
 #include <stdexcept>
 
-// TODO(mikolaj-jalocha): write tests
-
 template<typename T>
 struct Node {
     T element;
