@@ -103,9 +103,8 @@ void testsForQueues(T& structure, const std::string& structureName, int operatio
             int testPriority;
             testPFile >> testPriority;
 
-            T freshStructure;
             while (RandomNumbersFile >> element) {
-                freshStructure.insert(element, testPriority);
+                structure.insert(element, testPriority);
             }
             result += QueuePerformanceTests(structure, operationChoice, testValue,  testPriority);
         }
