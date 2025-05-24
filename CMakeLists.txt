@@ -17,4 +17,6 @@ add_executable(DataStructuresLists main.cpp
         include/collections/priority_queues/max_priority_queue_heap.h
         include/tests/priority_queues_tests.h
         include/tests/lists_and_dynamic_array_tests.h
+        include/collections/hash_tables/HashTableLinear.cpp
+        include/collections/hash_tables/HashTableLinear.h
 )
