@@ -19,4 +19,6 @@ add_executable(DataStructuresLists main.cpp
         include/tests/lists_and_dynamic_array_tests.h
         include/collections/hash_tables/HashTableLinear.cpp
         include/collections/hash_tables/HashTableLinear.h
+        include/collections/hash_tables/HashMap.cpp
+        include/collections/hash_tables/HashMap.h
 )
