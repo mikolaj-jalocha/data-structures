@@ -12,16 +12,17 @@ class HashMap {
 private:
     int size = 0;
     int arraySize;
-    int getHash(int key);
+    int getHash(int key) const;
     DoublyLinkedList<std::pair<int,int>*>* tab;
 
 public:
+    HashMap(const HashMap& other);
     HashMap(int arraySize);
     ~HashMap();
     void insert(int key, int value);
-    int find(int key);
+    int find(int key) const;
     int remove(int key);
-    int getSize();
+    int getSize() const;
 };
 
 #endif //HASHMAP_H

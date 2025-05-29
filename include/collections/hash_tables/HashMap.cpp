@@ -11,7 +11,7 @@ HashMap::HashMap(int arraySize) {
 HashMap::~HashMap() {
     delete [] tab;
 }
-int HashMap::getHash(int key) {
+int HashMap::getHash(int key) const {
     return key % arraySize;
 }
 
@@ -36,7 +36,7 @@ int HashMap::remove(int key) {
     }
     throw std::out_of_range("Key not found in map");
 }
-int HashMap::find(int key) {
+int HashMap::find(int key) const {
     int index = this->getHash(key);
     for (int i = 0; i < tab[index].getSize(); i++) {
         auto* myPair = tab[index].get(i);
@@ -46,6 +46,20 @@ int HashMap::find(int key) {
     }
     throw std::out_of_range("Key not found in map");
 }
-int HashMap::getSize() {
+int HashMap::getSize() const {
     return size;
+}
+
+HashMap::HashMap(const HashMap& other) {
+    this->arraySize = other.arraySize;
+    this->size = other.size;
+    tab = new DoublyLinkedList<std::pair<int, int>*>[this->arraySize];
+
+    for (int i = 0; i < arraySize; i++) {
+        for (int j = 0; j < other.tab[i].getSize(); j++) {
+            auto* originalPair = other.tab[i].get(j);
+            auto* copiedPair = new std::pair<int, int>(*originalPair);
+            tab[i].push_first(copiedPair);
+        }
+    }
 }
