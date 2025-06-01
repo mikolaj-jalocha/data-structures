@@ -53,6 +53,31 @@ void generateRandomNumbersToFile(int count, const std::string& number) {
         outTestFile.close();
     }
 
+    //generate key for hash tables
+    std::string fileName1 = std::to_string(count) + number + "_key.txt";
+
+    if (std::filesystem::exists(fileName1)) {
+        std::cout << "File " << fileName1 << " already exist. If you want to generate new data, delete mentioned file.\n";
+        return;
+    }
+
+    std::ofstream keysFile(fileName1);
+    if (!keysFile.is_open()) {
+        std::cerr << "Can't open the file to write: " << fileName1 << "\n";
+        return;
+    }
+    std::uniform_int_distribution<int> distKey(0, INT32_MAX);
+
+    std::vector<int> keys;
+    for (int i = 0; i < count; ++i) {
+        int randomKey = distKey(gen);
+        keys.push_back(randomKey);
+        keysFile << randomKey << "\n";
+    }
+
+    keysFile.close();
+    std::cout << "Generated " << count << " random keys and saved them to the file: " << fileName1 << "\n";
+
     //Generate index for testing methods
     std::uniform_int_distribution<int> indexDist(0, count - 1);
     int testIndex = indexDist(gen);
