@@ -3,38 +3,38 @@
 
 #include <string>
 
-struct Node {
+struct NodeAVL {
     int key;
     int value;
     int height;
-    Node* left;
-    Node* right;
+    NodeAVL* left;
+    NodeAVL* right;
 
-    explicit Node(int key, int value)
+    explicit NodeAVL(int key, int value)
         : key(key),value(value), height(1), left(nullptr), right(nullptr) {}
 };
 
 class AVLTree {
 private:
-    Node* root;
+    NodeAVL* root;
     int size;
 
 
-    static int height(Node* node);
-    static int balance_factor(Node* node);
-    static Node* left_rotate(Node* node);
-    static Node* right_rotate(Node* node);
-    Node* insert(Node* node, int key, int value);
-    Node* remove(Node* node, int key);
-    static void displayTree(const Node *node);
-    void clear(Node* node);
+    static int height(NodeAVL* node);
+    static int balance_factor(NodeAVL* node);
+    static NodeAVL* left_rotate(NodeAVL* node);
+    static NodeAVL* right_rotate(NodeAVL* node);
+    NodeAVL* insert(NodeAVL* node, int key, int value);
+    NodeAVL* remove(NodeAVL* node, int key);
+    static void displayTree(const NodeAVL *node);
+    void clear(NodeAVL* node);
 
 
 public:
     AVLTree();
     ~AVLTree();
 
-    static Node* copy( Node* node);
+    static NodeAVL* copy( NodeAVL* node);
     void copyFrom(const AVLTree& other);
     void insert(const int key, const int value) { root = insert(root, key, value); }
     void remove(const int key) { root = remove(root, key); }

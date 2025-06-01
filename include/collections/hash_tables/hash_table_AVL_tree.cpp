@@ -3,7 +3,7 @@
 
 AVLTree::AVLTree() : root(nullptr), size(0){ }
 
-void AVLTree::clear(Node* node) {
+void AVLTree::clear(NodeAVL* node) {
     if (!node) return;
     clear(node->left);
     clear(node->right);
@@ -15,21 +15,21 @@ AVLTree::~AVLTree() {
     size =0;
 }
 
-int AVLTree::height(Node* node)
+int AVLTree::height(NodeAVL* node)
 {
     return node ? node->height : 0;
 }
 
-int AVLTree::balance_factor(Node* node)
+int AVLTree::balance_factor(NodeAVL* node)
 {
     return node ? height(node->left) - height(node->right) : 0;
 }
 
-Node* AVLTree::insert(Node* node, int key, int value){
+NodeAVL* AVLTree::insert(NodeAVL* node, int key, int value){
 
     if (node == nullptr) {
         size++;
-        return new Node(key, value);
+        return new NodeAVL(key, value);
     }
 
     if (key < node->key) {
@@ -62,9 +62,9 @@ Node* AVLTree::insert(Node* node, int key, int value){
     return node;
 }
 
-Node* AVLTree::left_rotate(Node* node) {
-    Node *r_child(node->right);
-    Node* rl_grandchild(r_child->left);
+NodeAVL* AVLTree::left_rotate(NodeAVL* node) {
+    NodeAVL *r_child(node->right);
+    NodeAVL* rl_grandchild(r_child->left);
 
     r_child->left = node;
     node->right = rl_grandchild;
@@ -74,9 +74,9 @@ Node* AVLTree::left_rotate(Node* node) {
     return r_child;
 }
 
-Node* AVLTree::right_rotate(Node* node) {
-    Node *l_child(node->left);
-    Node* lr_grandchild(l_child->right);
+NodeAVL* AVLTree::right_rotate(NodeAVL* node) {
+    NodeAVL *l_child(node->left);
+    NodeAVL* lr_grandchild(l_child->right);
 
     l_child->right = node;
     node->left = lr_grandchild;
@@ -86,7 +86,7 @@ Node* AVLTree::right_rotate(Node* node) {
     return l_child;
 }
 
-Node* AVLTree::remove(Node* node, const int key) {
+NodeAVL* AVLTree::remove(NodeAVL* node, const int key) {
     if (node == nullptr)
         return nullptr;
 
@@ -97,12 +97,12 @@ Node* AVLTree::remove(Node* node, const int key) {
     } else {
         if (node->left == nullptr || node->right == nullptr) {
             size--;
-            Node* n = node->left ? node->left : node->right;
+            NodeAVL* n = node->left ? node->left : node->right;
             delete node;
             return n;
         }
 
-        const Node* min = node->right;
+        const NodeAVL* min = node->right;
         while (min->left) {
             min = min->left;
         }
@@ -131,7 +131,7 @@ Node* AVLTree::remove(Node* node, const int key) {
 int AVLTree::getSize() const {
     return size;
 }
-void AVLTree::displayTree(const Node *node) {
+void AVLTree::displayTree(const NodeAVL *node) {
     if (node != nullptr) {
         std::cout << "["<<node->key << ": "<<node->value<<"], ";
         displayTree(node->left);
@@ -143,14 +143,14 @@ void AVLTree::display() const {
     displayTree(root);
 }
 
-Node* AVLTree::copy( Node* node) {
+NodeAVL* AVLTree::copy( NodeAVL* node) {
     if (!node) return nullptr;
 
-    Node* newNode = new Node(node->key, node->value);
-    newNode->left = copy(node->left);
-    newNode->right = copy(node->right);
-    newNode->height = node->height;
-    return newNode;
+    NodeAVL* newNodeAVL = new NodeAVL(node->key, node->value);
+    newNodeAVL->left = copy(node->left);
+    newNodeAVL->right = copy(node->right);
+    newNodeAVL->height = node->height;
+    return newNodeAVL;
 }
 
 void AVLTree::copyFrom(const AVLTree& other) {
