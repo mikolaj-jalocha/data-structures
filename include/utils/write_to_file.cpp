@@ -31,7 +31,7 @@ void toFile(int operationChoice, const std::string& sectionName, unsigned long l
                 std::cerr << "Unknown operation" << std::endl;
                 break;
         }
-    }else{
+    }else if (sectionName == "Array list" || sectionName == "Singly linked list"|| sectionName == "Doubly linked list"){
     switch (operationChoice) {
         case 1: {
             fileName = "push_first.txt";
@@ -66,6 +66,21 @@ void toFile(int operationChoice, const std::string& sectionName, unsigned long l
             break;
         }
     }
+    }else {
+        switch (operationChoice) {
+            case 1: {
+                fileName = "insert.txt";
+                break;
+            }
+            case 2: {
+                fileName = "remove.txt";
+                break;
+            }
+            default: {
+                std::cerr << "Unknown operation" << std::endl;
+                break;
+            }
+        }
     }
 
 
