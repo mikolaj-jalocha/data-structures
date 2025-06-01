@@ -115,7 +115,7 @@ int runStructureMenu() {
                 break;
             }
             case 10: {
-                HashTableAVLTree hashTableAVLTree(1000);
+                HashTableAVLTree hashTableAVLTree;
                 testsForHashTables(hashTableAVLTree, "Hash table with AVL tree", operationChoice);
                 break;
             }
@@ -125,7 +125,7 @@ int runStructureMenu() {
                     testsForHashTables(hashTableLinear, "Hash table linear", i);
                     HashMap hashTableDoublyLinkedList;
                     testsForHashTables(hashTableDoublyLinkedList, "Hash table with doubly linked list", i);
-                    HashTableAVLTree hashTableAVLTree(1000);
+                    HashTableAVLTree hashTableAVLTree;
                     testsForHashTables(hashTableAVLTree, "Hash table with AVL tree", i);
                 }
                 break;
