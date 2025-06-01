@@ -4,9 +4,9 @@
 
 #include "HashMap.h"
 
-HashMap::HashMap(int arraySize) {
-    this->arraySize = arraySize;
-    tab = new DoublyLinkedList<std::pair<int, int> *>[this->arraySize];
+
+HashMap::HashMap() {
+    tab = new DoublyLinkedList<std::pair<int, int> *>[arraySize];
 }
 HashMap::~HashMap() {
     delete [] tab;
@@ -20,6 +20,10 @@ void HashMap::insert(int key, int value) {
     int index = this->getHash(key);
     tab[index].push_first(myPair);
     size++;
+    float loadFactor = static_cast<float>(size) / arraySize;
+    if (loadFactor >= 0.75f) {
+        resize();
+    }
 }
 
 int HashMap::remove(int key) {
@@ -49,6 +53,21 @@ int HashMap::find(int key) const {
 int HashMap::getSize() const {
     return size;
 }
+void HashMap::resize() {
+    arraySize *= 2;
+    DoublyLinkedList<std::pair<int,int>*>* newTab = new DoublyLinkedList<std::pair<int, int> *>[this->arraySize];
+
+    for (int i = 0; i < arraySize/2; i++) {
+        while (!tab[i].isEmpty()) {
+            auto* myPair = tab[i].remove_first();
+            int index = this->getHash(myPair->first);
+            newTab[index].push_first(myPair);
+        }
+    }
+    delete [] tab;
+    tab = newTab;
+}
+
 
 HashMap::HashMap(const HashMap& other) {
     this->arraySize = other.arraySize;

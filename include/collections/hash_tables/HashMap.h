@@ -11,13 +11,14 @@ class HashMap {
 
 private:
     int size = 0;
-    int arraySize;
+    int arraySize = 10;
     int getHash(int key) const;
+    void resize();
     DoublyLinkedList<std::pair<int,int>*>* tab;
 
 public:
     HashMap(const HashMap& other);
-    HashMap(int arraySize);
+    HashMap();
     ~HashMap();
     void insert(int key, int value);
     int find(int key) const;
