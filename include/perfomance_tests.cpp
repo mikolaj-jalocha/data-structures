@@ -2,11 +2,15 @@
 #include "collections/singly_linked_list.h"
 #include "collections/doubly_linked_list.h"
 #include "collections/array_list.h"
+#include "collections/hash_tables/HashMap.h"
+#include "collections/hash_tables/HashTableLinear.h"
+#include "collections/hash_tables/hash_table_AVL_tree.h"
 #include "collections/priority_queues/max_priority_queue_doubly_linked_list.h"
 #include "collections/priority_queues/max_priority_queue_heap.h"
 #include "utils/random_numbers_generator.h"
 #include "tests/lists_and_dynamic_array_tests.h"
 #include "tests/priority_queues_tests.h"
+#include "tests/hash_tables_tests.h"
 
 int runStructureMenu() {
 
@@ -23,7 +27,7 @@ int runStructureMenu() {
         int topicChoice;
         int structureChoice;
         int operationChoice;
-        std::cout<<"Choose:\n1-Lists and dynamic array\n2-Priority queues\n0-Exit\n";
+        std::cout<<"Choose:\n1-Lists and dynamic array\n2-Priority queues\n3-Hash tables\n0-Exit\n";
         std::cin >> topicChoice;
         if (topicChoice==0) return 0;
         if (topicChoice==1) {
@@ -40,6 +44,16 @@ int runStructureMenu() {
             structureChoice +=4;
             if (structureChoice != 7) {
                 std::cout << "Choose the operation:\n1 - Insert\n2 - Extract max\n3 - Peek\n4 - Modify key\n5 - Return size\n";
+                std::cin>>operationChoice;
+            }
+        }
+        else if (topicChoice==3) {
+            std::cout<<"Choose the structure:\n1-Hash table linear\n2-Hash table with doubly linked list\n3-Hash table with AVL tree\n4-All tests at once\n";
+            std::cin >> structureChoice;
+            //adjustment to one switch case
+            structureChoice +=7;
+            if (structureChoice != 11) {
+                std::cout << "Choose the operation:\n1 - Insert\n2 - Remove\n";
                 std::cin>>operationChoice;
             }
         }
@@ -87,6 +101,32 @@ int runStructureMenu() {
                     testsForQueues(PQueueHeap, "Max priority queue heap", i);
                     MaxPriorityQueueDoublyLinkedList<int> PQueueDoublyLinkedList;
                     testsForQueues(PQueueDoublyLinkedList, "Max priority queue doubly linked list", i);
+                }
+                break;
+            }
+            case 8: {
+                HashTableLinear hashTableLinear;
+                testsForHashTables(hashTableLinear, "Hash table linear", operationChoice);
+                break;
+            }
+            case 9: {
+                HashMap hashTableDoublyLinkedList(1000);
+                testsForHashTables(hashTableDoublyLinkedList, "Hash table with doubly linked list", operationChoice);
+                break;
+            }
+            case 10: {
+                HashTableAVLTree hashTableAVLTree(1000);
+                testsForHashTables(hashTableAVLTree, "Hash table with AVL tree", operationChoice);
+                break;
+            }
+            case 11: {
+                for (int i=1; i<=2; i++) {
+                    HashTableLinear hashTableLinear;
+                    testsForHashTables(hashTableLinear, "Hash table linear", i);
+                    HashMap hashTableDoublyLinkedList(1000);
+                    testsForHashTables(hashTableDoublyLinkedList, "Hash table with doubly linked list", i);
+                    HashTableAVLTree hashTableAVLTree(1000);
+                    testsForHashTables(hashTableAVLTree, "Hash table with AVL tree", i);
                 }
                 break;
             }
