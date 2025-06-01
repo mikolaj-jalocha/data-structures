@@ -8,8 +8,8 @@
 struct Element {
     int key;
     int value;
-
-    enum { EMPTY, OCCUPIED, DELETED } state = EMPTY;
+    enum { EMPTY, OCCUPIED, DELETED } state;
+    Element() : key(0), value(0), state(EMPTY) {}
 };
 
 class HashTableLinear {
@@ -32,6 +32,9 @@ public:
     int find(int key);
 
     bool remove(int key);
+    HashTableLinear(const HashTableLinear& other);
+    HashTableLinear& operator=(const HashTableLinear& other);
+
 };
 
 #endif // HASHTABLELINEAR_H
