@@ -9,6 +9,9 @@ The project was prepared for the **Data Structures course project** at **Wrocła
 3. **Dynamic Array**
 4. **Priority queue based on Heap**
 5. **Priorty queue based on Doubly Linked List**
+6. **Hash table based on Doubly Linked List**
+7. **Hash table based on AVL tree**
+8. **Hash table based on linear probing**
 
 ## Project Objectives
 
