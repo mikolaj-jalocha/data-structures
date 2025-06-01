@@ -11,7 +11,7 @@ class HashMap {
 
 private:
     int size = 0;
-    int arraySize = 10;
+    int arraySize = 5000;
     int getHash(int key) const;
     void resize();
     DoublyLinkedList<std::pair<int,int>*>* tab;

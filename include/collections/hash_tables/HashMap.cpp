@@ -21,7 +21,7 @@ void HashMap::insert(int key, int value) {
     tab[index].push_first(myPair);
     size++;
     float loadFactor = static_cast<float>(size) / arraySize;
-    if (loadFactor >= 0.75f) {
+    if (loadFactor >= 2.5) {
         resize();
     }
 }
